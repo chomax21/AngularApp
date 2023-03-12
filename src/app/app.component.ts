@@ -5,28 +5,25 @@ import { ToDoItem } from './ToDoItem';
 
 @Component({
     selector: 'my-app',
-    template: `<form>
-    <div>
-    <div>
-        <label for="id">ID</label>
-        <input type="number" name="id" [(ngModel)]="id">
+    template: `<div><div>
+        <label for="Id">ID</label>
+        <input type="number" name="Id" [(ngModel)]="item.Id">
     </div>
     <div>
-        <label for="message">Message</label>
-        <input type="text" name="message" [(ngModel)]="message">
+        <label for="Case">Message</label>
+        <input type="text" name="Case" [(ngModel)]="item.Case">
     </div>
-    <div class="form-control">
-        <label for="priority">Priority</label>
-        <input type="number" name="priority" [(ngModel)]="priority">
+    <div>
+        <label for="Priority">Priority</label>
+        <input type="number" name="Priority" [(ngModel)]="item.Priority">
     </div>
-    <div class="form-group">
-        <button (click)="saveToDo()">Save</button>
+    <div>
+        <button (click)="saveToDo(item)">Save</button>
     </div>
-    <div class="form-group">
+    <div>
         <button (click)="logToDo()">Log</button>
     </div>    
-</div>
-</form>`,
+</div>`,
     providers: [HttpClient, ToDoService]
 })
 
@@ -35,18 +32,30 @@ import { ToDoItem } from './ToDoItem';
 export class AppComponent {
     constructor(private http: HttpClient, private todoService: ToDoService) { }
 
-    id: number = 0;
-    message: string = "пусто";
-    priority: number = 0;
+    item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(");
 
-    saveToDo() {        
-        this.todoService.createToDoItem(this.id,this.message,this.priority).subscribe({
-            next: (data: any) => { console.log(this.message + " sending") },
+    //id: number = 0;
+    //message: string = "пусто";
+    //priority: number = 0;
+
+    FirstName: string = ""; 
+    LastName: string = "";
+    City: string = "";
+    Hoby: string = "";
+    Age: number = 0;
+
+    saveToDo(item: ToDoItem) {        
+        this.todoService.createToDoItem(item).subscribe({
+            next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
         });
     }
     logToDo() {
 
-        console.log(this.id + "_" + this.message);
+        console.log(this.item.Id + "_" + this.item.Case);
+    }
+
+    getUser(){
+
     }
 }

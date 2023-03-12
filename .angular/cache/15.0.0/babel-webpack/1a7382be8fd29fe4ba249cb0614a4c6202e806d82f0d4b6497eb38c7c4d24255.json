@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class ToDoItem {\n  id;\n  priority;\n  message;\n  constructor(id, priority, message) {\n    this.id = id;\n    this.priority = priority;\n    this.message = message;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
