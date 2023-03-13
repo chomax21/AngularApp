@@ -56,3 +56,22 @@ baseline.json
 # Husky
 .husky/_
 aio/content/examples/.DS_Store
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/0.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/1.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/2.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/3.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/5.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/7.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/8.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/10.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/11.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/index.pack
+.angular/cache/15.0.0/angular-webpack/80c14f9dbdf5fce27dfc0d2a84ef9fb68a96770d/index.pack.old
+.angular/cache/15.0.0/babel-webpack/1f41c4f0558c46292c03120114178a305ebe8e0fd2a29c64abd40b0ac9b19c2d.json
+.angular/cache/15.0.0/babel-webpack/2cc9126dd91d272ddc6545ed4652d570ed6d64af6f33b91eb409403e445a7526.json
+.angular/cache/15.0.0/babel-webpack/3d88091705a9155da60fe708de6e3c65f4241b3b198f9de5669fc50c56e6e088.json
+.angular/cache/15.0.0/babel-webpack/8e454854aa4983a3b20797439693cfa05d54051e89fdfeabe225353800afd864.json
+.angular/cache/15.0.0/babel-webpack/751d3fbf5e0cabdf4ba6beb95257be915ce956cc400affe7e68292fcbf554113.json
+.angular/cache/15.0.0/babel-webpack/863a422f14fcf1546e7781922d769ccc1b8b40959c0e48076d924d9c9d03970d.json
+.angular/cache/15.0.0/babel-webpack/941d12daa6307858c3391c3a00178ba9960e33f395c2586b5eb2f0cabfac7a84.json
+.angular/cache/15.0.0/babel-webpack/b26d2816246b2637246a3bff81538541810a48373f97f96c54491ee054969201.json

@@ -23,7 +23,11 @@ export class ToDoService{
             return itemList.map(function(item:any):ToDoItem{
                 return new ToDoItem(item.Id, item.Priority, item.Case);
             })
-        } ))
+        }));
+    }
+
+    createrUser(){
+        
     }
 
 }
