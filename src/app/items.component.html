@@ -1,0 +1,12 @@
+<div>
+    <div>
+        <label>Login</label>
+        <input name="login" [(ngModel)] = "tempUserLogin">
+        <label>Password</label>
+        <input name="password" [(ngModel)] = "tempUserPassword">
+    </div>
+    <div>
+        <label>{{tempUserId}}</label>
+        <button (click)="getUserId(tempUserLogin, tempUserPassword)">Кнопка дай нам айди</button>
+    </div>
+</div>

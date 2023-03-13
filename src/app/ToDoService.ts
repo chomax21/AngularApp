@@ -14,7 +14,7 @@ export class ToDoService{
     }
 
     getUserId(login:string, password:string){
-        return this.http.get('https://localhost:7218/api/get-user-id?login=' + login + ',password=' + password);
+        return this.http.get('https://localhost:7218/api/get-user-id?login=' + login + '&password=' + password);
     }
 
     getDoLists(Id:string): Observable<ToDoItem[]>{
@@ -27,7 +27,7 @@ export class ToDoService{
     }
 
     createrUser(){
-        
+
     }
 
 }

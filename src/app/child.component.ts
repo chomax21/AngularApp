@@ -21,6 +21,7 @@ export class ChildComponent{
             error: error => console.log(error)
         });
         item.Case = "";
+        item.Id = 0;
     }
     logToDo() {
 
