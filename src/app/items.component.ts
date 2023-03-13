@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
+import { User } from './User';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class ItemsComponent{
     tempUserLogin:string;
     tempUserPassword:string;
     doListItems:ToDoItem[];
+    userCreate:User = new User("","",0,"","","","");
 
     getItems(Id:string){
         this.todoService.getDoLists(Id).subscribe({
@@ -24,8 +26,10 @@ export class ItemsComponent{
         });
     }
 
-    createUser(){
-        
+    createUser(user:User){
+        this.userCreate.login = this.tempUserLogin;
+        this.userCreate.password = this.tempUserPassword;
+        this.todoService.createrUser(user).subscribe();
     }
 
     getUserId(userLogin:string, userPassword:string){

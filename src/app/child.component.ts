@@ -27,9 +27,4 @@ export class ChildComponent{
 
         console.log(this.item.Id + "_" + this.item.Case);
     }
-
-    getUser(){
-
-    }
-
 }

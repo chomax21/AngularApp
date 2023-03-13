@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { ToDoItem } from './ToDoItem';
+import { User } from './User';
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 
@@ -26,8 +27,8 @@ export class ToDoService{
         }));
     }
 
-    createrUser(){
-
+    createrUser(user:User){
+        return this.http.post("https://localhost:7218/api/create-user", user);
     }
 
 }
