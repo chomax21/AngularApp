@@ -6,9 +6,11 @@ import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ToDoService{
     constructor(private http: HttpClient) { }
+
+    public UserId:string = "ID не пришел =(!";
 
     createToDoItem(item:ToDoItem){
         return this.http.post("https://localhost:7218/api/create", item);
@@ -19,11 +21,13 @@ export class ToDoService{
     }
 
     getDoLists(Id:string): Observable<ToDoItem[]>{
-        return this.http.get('https://localhost:7218/api/getnotready?Id=' + Id).pipe(map((data:any)=>{
-            let itemList = data["Values"];
-            return itemList.map(function(item:any):ToDoItem{
-                return new ToDoItem(item.Id, item.Priority, item.Case);
-            })
+        return this.http.get('https://localhost:7218/api/getready?UserId=' + Id).pipe(map((responce:any) => {
+            let itemList = responce["value"];
+            if(itemList){
+                return itemList.map(function(item:any): ToDoItem{
+                    return new ToDoItem(item.id, item.priority, item.case, item.userid);
+                })}
+            return []
         }));
     }
 

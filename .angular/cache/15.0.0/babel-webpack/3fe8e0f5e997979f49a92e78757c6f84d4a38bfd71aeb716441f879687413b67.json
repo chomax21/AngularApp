@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class ToDoItem {\n  Id;\n  Priority;\n  Case;\n  userId;\n  constructor(Id, Priority, Case, userId) {\n    this.Id = Id;\n    this.Priority = Priority;\n    this.Case = Case;\n    this.userId = userId;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

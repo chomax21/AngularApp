@@ -1,34 +1,47 @@
 <div>
-    <button click="setName()">ТестируемИМЯ!</button>
-    <div *ngIf="haveName;else notName">
-        <h3>Привет {{userCreate.logine}}</h3>
-        <h3>твое имя {{userCreate.firstName}}</h3>
-    </div>
-    <ng-template #notName>
         <div>
             <label>Login</label>
             <input name="login" [(ngModel)]="tempUserLogin">
             <label>Password</label>
             <input name="password" [(ngModel)]="tempUserPassword">
         </div>
-    </ng-template>
     <div>
-        <label>{{tempUserId}} #tempUserId</label>
-        <button (click)="getUserId(tempUserLogin, tempUserPassword)">Кнопка дай нам айди</button>
+        <label>{{tempUserId}}</label>
+        <button (click)="getUserId(tempUserLogin, tempUserPassword)">Кнопка дай нам айди</button>        
+    </div>
+    <div>
         <button (click)="createUser(userCreate)">Кнопка замути нам нового пользователя</button>
     </div>
     <div>
-        <button click="itemWork()">Покажи список</button>
-        <label>ХОЧУ АЙДИ!!!</label>
-        <input [(ngModel)]="tempUserId">
-        <button click="getItems(tempUserId)">Работаем!!!</button>
-        
+        <button (click)="getItems(tempUserId)">Кнопка дай нам список дел</button>
+    </div>
+    <div>
+        <button (click)="itemWork()">Смотрим список</button>
     </div>
     <div *ngIf="haveValues">
         <p>TEST</p>
         <dl *ngFor="let item of doListItems">
-            <dt>{{item.Priotity}}</dt>
-            <dd>{{item.Case}}</dd>
+            <h4>{{item.Case}}</h4>
         </dl>
+    </div>
+</div>
+<div class="flex-container flex-justify background-color">
+    <div class="flex-justify">    
+        <div class="flex-colomn margin">
+            <label class="flex-justify" for="Case">Message</label>
+            <input class="border-color" type="text" name="Case" [(ngModel)]="item.Case">
+        </div>
+        <div class="flex-colomn margin">
+            <label class="flex-justify" for="Priority">Priority</label>
+            <input class="border-color" type="number" name="Priority" [(ngModel)]="item.Priority">
+        </div>
+    </div>
+</div>
+<div class="flex-container flex-justify">
+    <div class="margin">
+        <button class="flex-item border-color button-style" (click)="saveToDo(item)">Save</button>
+    </div>
+    <div class="margin">
+        <button class="flex-item border-color button-style" (click)="logToDo()">Log</button>
     </div>
 </div>

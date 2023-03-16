@@ -13,7 +13,7 @@ import { ToDoItem } from './ToDoItem';
 
 
 export class AppComponent {
-    working:boolean = false;
+    working:boolean = true;
     goWork(){
         this.working = !this.working;
     }
