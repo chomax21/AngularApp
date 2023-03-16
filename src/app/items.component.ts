@@ -18,6 +18,13 @@ export class ItemsComponent{
     tempUserPassword:string;
     doListItems:ToDoItem[];
     userCreate:User = new User("","",0,"","","","");
+    haveValues:boolean = false;
+    haveName:boolean = false;
+
+    itemWork(){
+        this.haveValues = !this.haveValues;
+    }
+
 
     getItems(Id:string){
         this.todoService.getDoLists(Id).subscribe({
@@ -34,8 +41,16 @@ export class ItemsComponent{
 
     getUserId(userLogin:string, userPassword:string){
         this.todoService.getUserId(userLogin, userPassword).subscribe({
-            next: (data: any) => { this.tempUserId = data.value },
+            next: (data: any) => { this.tempUserId = data.value;
+                                this.todoService.UserId = this.tempUserId },
             error: error => console.log(error)
         });
     }
+    
+    setName(){
+        this.userCreate.firstName = "Max";
+        this.userCreate.login = "max"
+        this.haveName = true;
+        console.log(this.haveName);        
+    }    
 }

@@ -1,13 +1,34 @@
 <div>
-    <div>
-        <label>Login</label>
-        <input name="login" [(ngModel)] = "tempUserLogin">
-        <label>Password</label>
-        <input name="password" [(ngModel)] = "tempUserPassword">
+    <button click="setName()">ТестируемИМЯ!</button>
+    <div *ngIf="haveName;else notName">
+        <h3>Привет {{userCreate.logine}}</h3>
+        <h3>твое имя {{userCreate.firstName}}</h3>
     </div>
+    <ng-template #notName>
+        <div>
+            <label>Login</label>
+            <input name="login" [(ngModel)]="tempUserLogin">
+            <label>Password</label>
+            <input name="password" [(ngModel)]="tempUserPassword">
+        </div>
+    </ng-template>
     <div>
-        <label>{{tempUserId}}</label>
+        <label>{{tempUserId}} #tempUserId</label>
         <button (click)="getUserId(tempUserLogin, tempUserPassword)">Кнопка дай нам айди</button>
         <button (click)="createUser(userCreate)">Кнопка замути нам нового пользователя</button>
+    </div>
+    <div>
+        <button click="itemWork()">Покажи список</button>
+        <label>ХОЧУ АЙДИ!!!</label>
+        <input [(ngModel)]="tempUserId">
+        <button click="getItems(tempUserId)">Работаем!!!</button>
+        
+    </div>
+    <div *ngIf="haveValues">
+        <p>TEST</p>
+        <dl *ngFor="let item of doListItems">
+            <dt>{{item.Priotity}}</dt>
+            <dd>{{item.Case}}</dd>
+        </dl>
     </div>
 </div>
