@@ -1,20 +1,29 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
 import { User } from './User';
 import { DataService } from "./data.service";
+import { CookieService } from "ngx-cookie-service";
 
 
 @Component({
     selector: 'items-comp',
     templateUrl: './items.component.html',
-    providers: [HttpClient, ToDoService, ]
+    providers: [HttpClient, ToDoService, CookieService]
 })
-export class ItemsComponent{
-    constructor(private todoService: ToDoService, private dataService: DataService) { }
+export class ItemsComponent implements OnInit, OnDestroy{
+    constructor(private todoService: ToDoService, private dataService: DataService, private cookie:CookieService) { }
 
-    tempUserId:string = "пусто!";
+    ngOnDestroy(): void {
+        this.cookie.delete("userId");
+    }
+    ngOnInit(): void {
+        let cook:string = this.cookie.get("userId");
+        console.log(cook);
+    }
+
+    tempUserId:string;
     tempUserLogin:string;
     tempUserPassword:string;
     doListItems:ToDoItem[];
@@ -32,12 +41,18 @@ export class ItemsComponent{
     }
 
 
-    getItems(Id:string){
-        this.todoService.getDoLists(Id).subscribe({
-            next: (data: ToDoItem[]) => { this.doListItems = data;
-            console.log(this.doListItems) },
-            error: error => console.log(error)
-        });
+    getItems(){
+        this.tempUserId = this.cookie.get("UserId");
+        if(this.tempUserId){
+            this.todoService.getDoLists(this.tempUserId).subscribe({
+                next: (data: ToDoItem[]) => { this.doListItems = data;
+                console.log(this.doListItems) },
+                error: error => console.log(error)
+            });
+        }
+        else{
+            console.log("Error, not found ID");
+        }        
     }
 
     createUser(user:User){
@@ -50,7 +65,7 @@ export class ItemsComponent{
         this.todoService.getUserId(userLogin, userPassword).subscribe({
             next: (data: any) => 
                 { this.tempUserId = data.value;
-                this.setUserId(); },
+                  this.cookie.set("UserId", data.value)},
             error: error => console.log(error)
         });
     }

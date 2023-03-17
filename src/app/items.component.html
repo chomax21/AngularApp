@@ -13,7 +13,7 @@
         <button (click)="createUser(userCreate)">Кнопка замути нам нового пользователя</button>
     </div>
     <div>
-        <button (click)="getItems(tempUserId)">Кнопка дай нам список дел</button>
+        <button (click)="getItems()">Кнопка дай нам список дел</button>
     </div>
     <div>
         <button (click)="itemWork()">Смотрим список</button>
@@ -21,7 +21,10 @@
     <div *ngIf="haveValues">
         <p>TEST</p>
         <dl *ngFor="let item of doListItems">
-            <h4>{{item.Case}}</h4>
+            <dt>Нужно сделать:</dt>
+            <dd>{{item.Case}}</dd>
+            <dd>Приоритет: {{item.Priority}}</dd>
+            <button>Изменить</button><button>Сделано!</button>
         </dl>
     </div>
 </div>
