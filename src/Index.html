@@ -8,5 +8,8 @@
 </head>
 <body>
     <my-app>Загрузка...</my-app>
+    <script>
+        window.onbeforeunload = function(){jQuery.cookie('UserId', null);}
+    </script>
 </body>
 </html>

@@ -20,6 +20,10 @@ export class ItemsComponent implements OnInit, OnDestroy{
     }
     ngOnInit(): void {
         let cook:string = this.cookie.get("userId");
+        if(cook){
+            this.haveValues = !this.haveValues;
+            this.haveName = !this.haveName;
+        }
         console.log(cook);
     }
 
@@ -28,13 +32,10 @@ export class ItemsComponent implements OnInit, OnDestroy{
     tempUserPassword:string;
     doListItems:ToDoItem[];
     userCreate:User = new User("","",0,"","","","");
-    haveValues:boolean = false;
+    haveValues:boolean = true;
     haveName:boolean = false;
     item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(","nothing");
 
-    itemWork(){
-        this.haveValues = !this.haveValues;
-    }
 
     setUserId(){
         this.dataService.UserIdFromService(this.tempUserId);
@@ -52,7 +53,15 @@ export class ItemsComponent implements OnInit, OnDestroy{
         }
         else{
             console.log("Error, not found ID");
+            //this.haveValues = !this.haveValues;
+            //this.haveName = !this.haveName;
         }        
+    }
+
+    logout(){
+        this.cookie.delete("UserId");
+        this.haveValues = !this.haveValues;
+        this.haveName = !this.haveName;
     }
 
     createUser(user:User){
@@ -68,6 +77,10 @@ export class ItemsComponent implements OnInit, OnDestroy{
                   this.cookie.set("UserId", data.value)},
             error: error => console.log(error)
         });
+        if(this.tempUserId){
+            this.haveValues = !this.haveValues;
+            this.haveName = !this.haveName;
+        }
     }
     
     setName(){
@@ -88,7 +101,6 @@ export class ItemsComponent implements OnInit, OnDestroy{
         item.Id = 0;
     }
     logToDo(){
-
         console.log(this.item.Id + "_" + this.item.Case);
     }
 }
