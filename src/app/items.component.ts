@@ -10,7 +10,10 @@ import { CookieService } from "ngx-cookie-service";
 @Component({
     selector: 'items-comp',
     templateUrl: './items.component.html',
-    providers: [HttpClient, ToDoService, CookieService]
+    styleUrls: ['./items.component.css'],
+    providers: [ToDoService, DataService, CookieService]
+    
+    //
 })
 export class ItemsComponent implements OnInit, OnDestroy{
     constructor(private todoService: ToDoService, private dataService: DataService, private cookie:CookieService) { }
