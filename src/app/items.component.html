@@ -1,52 +1,56 @@
 <div>
-
     <div *ngIf="haveValues">
+    <div class="myblock">
         <label>Login</label>
-        <input name="login" [(ngModel)]="tempUserLogin">
+        <input class="myinput" name="login" [(ngModel)]="tempUserLogin">
         <label>Password</label>
-        <input name="password" [(ngModel)]="tempUserPassword">
-        <div>
-            <button (click)="getUserId(tempUserLogin, tempUserPassword)">Авторизация</button>
-        </div>
-        <div>
-            <button (click)="createUser(userCreate)">Кнопка замути нам нового пользователя</button>
-        </div>
+        <input class="myinput" name="password" [(ngModel)]="tempUserPassword">
+    </div>       
+    <div class="myblock">
+        <button class="mybutton" (click)="getUserId(tempUserLogin, tempUserPassword)">Авторизация</button>
+        <button class="mybutton" (click)="createUser(userCreate)">Новый пользователь</button>
+    </div>
     </div>
     <div *ngIf="haveName">
-        <button (click)="logout()">Logout</button>
-    </div>
-    <div *ngIf="haveName">
-        <div>
-            <button (click)="getItems()">Кнопка дай нам список дел</button>
+        <div class="myblock">
+            <button class="mybutton" (click)="logout()">Logout</button>
+            <button class="mybutton" (click)="getItems()">Кнопка дай нам список дел</button>
         </div>
-        <div>
+        <div class="myblock">
             <dl *ngFor="let item of doListItems">
                 <dt>Нужно сделать:</dt>
                 <dd>{{item.Case}}</dd>
-                <dd>Приоритет: {{item.Priority}}</dd>
-                <button>Изменить</button><button>Сделано!</button>
+                <dd>Приоритет: {{item.stringPriority}}</dd>
+                <button class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
             </dl>
         </div>
-        <div class="flex-container flex-justify background-color">
-            <div class="flex-justify">
-                <div class="flex-colomn margin">
-                    <label class="flex-justify" for="Case">Message</label>
-                    <input class="border-color" type="text" name="Case" [(ngModel)]="item.Case">
+        <div>
+            <div class="myblock">
+                <div>
+                    <label class="mylabel" for="Case">Что нужно делать</label>
                 </div>
-                <div class="flex-colomn margin">
-                    <label class="flex-justify" for="Priority">Priority</label>
-                    <input class="border-color" type="number" name="Priority" [(ngModel)]="item.Priority">
+                <div>
+                    <textarea class="mytextarea" name="Case" [(ngModel)]="item.Case"></textarea>
+                </div>
+                <div>
+                    <label class="mylabel" for="Priority">Приоритет</label>
+                </div>
+                <div>                    
+                    <select class="myinput" type="number" name="Priority" [(ngModel)]="item.Priority">
+                        <option value="0">Высокий</option>
+                        <option value="1">Средний</option>
+                        <option value="2">Низкий</option>
+                    </select>
                 </div>
             </div>
         </div>
-        <div class="flex-container flex-justify">
-            <div class="margin">
-                <button class="flex-item border-color button-style" (click)="saveToDo(item)">Save</button>
+        <div class="myblock">
+            <div>
+                <button class="mybutton" (click)="saveToDo(item)">Сохранить</button>
             </div>
-            <div class="margin">
-                <button class="flex-item border-color button-style" (click)="logToDo()">Log</button>
+            <div>
+                <button class="mybutton" (click)="logToDo()">Log</button>
             </div>
         </div>
-
     </div>
 </div>

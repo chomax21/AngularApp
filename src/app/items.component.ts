@@ -12,90 +12,110 @@ import { CookieService } from "ngx-cookie-service";
     templateUrl: './items.component.html',
     styleUrls: ['./items.component.css'],
     providers: [ToDoService, DataService, CookieService]
-    
-    //
+
 })
-export class ItemsComponent implements OnInit, OnDestroy{
-    constructor(private todoService: ToDoService, private dataService: DataService, private cookie:CookieService) { }
+export class ItemsComponent implements OnInit, OnDestroy {
+    constructor(private todoService: ToDoService, private dataService: DataService, private cookie: CookieService) { }
 
     ngOnDestroy(): void {
         this.cookie.delete("userId");
     }
     ngOnInit(): void {
-        let cook:string = this.cookie.get("userId");
-        if(cook){
+        let cook: string = this.cookie.get("userId");
+        if (cook) {
             this.haveValues = !this.haveValues;
             this.haveName = !this.haveName;
         }
         console.log(cook);
     }
 
-    tempUserId:string;
-    tempUserLogin:string;
-    tempUserPassword:string;
-    doListItems:ToDoItem[];
-    userCreate:User = new User("","",0,"","","","");
-    haveValues:boolean = true;
-    haveName:boolean = false;
-    item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(","nothing");
+    tempUserId: string;
+    tempUserLogin: string;
+    tempUserPassword: string;
+    doListItems: ToDoItem[];
+    userCreate: User = new User("", "", 0, "", "", "", "");
+    haveValues: boolean = true;
+    haveName: boolean = false;
+    item: ToDoItem = new ToDoItem(0, 0, " ", " "," ");
 
 
-    setUserId(){
+    setUserId() {
         this.dataService.UserIdFromService(this.tempUserId);
     }
 
 
-    getItems(){
+    getItems() {
         this.tempUserId = this.cookie.get("UserId");
-        if(this.tempUserId){
+        if (this.tempUserId) {
             this.todoService.getDoLists(this.tempUserId).subscribe({
-                next: (data: ToDoItem[]) => { this.doListItems = data;
-                console.log(this.doListItems) },
+                next: (data: ToDoItem[]) => {
+                    this.doListItems = data;
+                    this.doListItems = this.setPriority(this.doListItems);                                    
+                    console.log(this.doListItems);
+                },
                 error: error => console.log(error)
             });
         }
-        else{
+        else {
             console.log("Error, not found ID");
             //this.haveValues = !this.haveValues;
             //this.haveName = !this.haveName;
-        }        
+        }
     }
 
-    logout(){
+    setPriority(items:ToDoItem[]):ToDoItem[]{
+        this.doListItems.forEach(function (value) {
+            switch (value.Priority) {
+                case 0:
+                    value.stringPriority = "Высокий"
+                    break;
+                case 1:
+                    value.stringPriority = "Средний"
+                    break;
+                case 2:
+                    value.stringPriority = "Низкий"
+                    break;
+            }
+        })
+        return this.doListItems;
+    }
+
+    logout() {
         this.cookie.delete("UserId");
         this.haveValues = !this.haveValues;
         this.haveName = !this.haveName;
     }
 
-    createUser(user:User){
+    createUser(user: User) {
         this.userCreate.login = this.tempUserLogin;
         this.userCreate.password = this.tempUserPassword;
         this.todoService.createrUser(user).subscribe();
     }
 
-    getUserId(userLogin:string, userPassword:string){
+    getUserId(userLogin: string, userPassword: string) {
         this.todoService.getUserId(userLogin, userPassword).subscribe({
-            next: (data: any) => 
-                { this.tempUserId = data.value;
-                  this.cookie.set("UserId", data.value)},
+            next: (data: any) => {
+                this.tempUserId = data.value;
+                this.cookie.set("UserId", data.value)
+            },
             error: error => console.log(error)
         });
-        if(this.tempUserId){
+        if (this.tempUserId) {
             this.haveValues = !this.haveValues;
             this.haveName = !this.haveName;
         }
     }
-    
-    setName(){
+
+    setName() {
         this.userCreate.firstName = "Max";
         this.userCreate.login = "max"
         this.haveName = true;
-        console.log(this.haveName);        
-    }  
-    
+        console.log(this.haveName);
+    }
+
     saveToDo(item: ToDoItem) {
         item.userId = this.tempUserId;
-        console.log(item.userId);       
+        console.log(item.userId);
         this.todoService.createToDoItem(item).subscribe({
             next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
@@ -103,7 +123,7 @@ export class ItemsComponent implements OnInit, OnDestroy{
         item.Case = "";
         item.Id = 0;
     }
-    logToDo(){
+    logToDo() {
         console.log(this.item.Id + "_" + this.item.Case);
     }
 }

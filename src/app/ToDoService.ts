@@ -21,11 +21,11 @@ export class ToDoService{
     }
 
     getDoLists(Id:string): Observable<ToDoItem[]>{
-        return this.http.get('https://localhost:7218/api/getready?UserId=' + Id).pipe(map((responce:any) => {
+        return this.http.get('https://localhost:7218/api/get-ready?UserId=' + Id).pipe(map((responce:any) => {
             let itemList = responce["value"];
             if(itemList){
                 return itemList.map(function(item:any): ToDoItem{
-                    return new ToDoItem(item.id, item.priority, item.case, item.userid);
+                    return new ToDoItem(item.id, item.priority, item.case, item.userid,"");
                 })}
             return []
         }));

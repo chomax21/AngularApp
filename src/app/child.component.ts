@@ -13,7 +13,7 @@ import { DataService } from "./data.service";
 export class ChildComponent{
     constructor(private http: HttpClient, private todoService: ToDoService, private dataService: DataService) { }
 
-    item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(","nothing");
+    item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(","nothing","");
     buttonReady: boolean = true;
     
 
