@@ -7,11 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ItemsComponent } from './items.component';
 import { DataService } from './data.service';
 import { CookieService } from 'ngx-cookie-service';
-
+import { PriorityPipe } from './priority.pipe'
 
 @NgModule({
     imports:      [ BrowserModule, FormsModule, HttpClientModule],
-    declarations: [ AppComponent, ChildComponent, ItemsComponent ],
+    declarations: [ AppComponent, ChildComponent, ItemsComponent, PriorityPipe ],
     providers:    [DataService, CookieService],
     bootstrap:    [ AppComponent ]
 })

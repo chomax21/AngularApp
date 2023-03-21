@@ -54,3 +54,15 @@
     background-size: auto;                
     background-position: center;
 }
+.red{
+    color: crimson;
+    font-weight: bold;
+}
+.yellow{
+    color:goldenrod;
+    font-weight: bold;
+}
+.green{
+    color:green;
+    font-weight: bold;
+}

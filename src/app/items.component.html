@@ -20,7 +20,11 @@
             <dl *ngFor="let item of doListItems">
                 <dt>Нужно сделать:</dt>
                 <dd>{{item.Case}}</dd>
-                <dd [ngClass]="">Приоритет: {{item.Priority | priority}}</dd>
+                <dd [ngClass]="{
+                    red: item.Priority == 0,
+                    yellow: item.Priority == 1,
+                    green: item.Priority == 2
+                }">Приоритет: {{item.Priority | priority}}</dd>
                 <button class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
             </dl>
         </div>
