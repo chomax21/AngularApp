@@ -123,6 +123,17 @@ export class ItemsComponent implements OnInit, OnDestroy {
         item.Case = "";
         item.Id = 0;
     }
+
+    changeToDo(doItem: ToDoItem){
+        doItem.Case = this.item.Case;
+        doItem.Priority = this.item.Priority;
+        doItem.userId = this.tempUserId;
+        this.todoService.changeDoList(doItem).subscribe({
+            error: error => console.log(error)            
+        });
+
+    }
+
     logToDo() {
         console.log(this.item.Id + "_" + this.item.Case);
     }

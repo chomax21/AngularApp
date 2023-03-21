@@ -35,4 +35,8 @@ export class ToDoService{
         return this.http.post("https://localhost:7218/api/create-user", user);
     }
 
+    changeDoList(item:ToDoItem){
+        return this.http.put("https://localhost:7218/api/change", item);
+    }
+
 }

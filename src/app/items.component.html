@@ -25,7 +25,7 @@
                     yellow: item.Priority == 1,
                     green: item.Priority == 2
                 }">Приоритет: {{item.Priority | priority}}</dd>
-                <button class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
+                <button (click)="changeToDo(item)" class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
             </dl>
         </div>
         <div>
