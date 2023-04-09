@@ -13,7 +13,7 @@ export class ToDoService{
     public UserId:string = "ID не пришел =(!";
 
     createToDoItem(item:ToDoItem){
-        return this.http.post("https://localhost:7218/api/create", item);
+        return this.http.post("https://localhost:7218/api/item", item);
     }
 
     getUserId(login:string, password:string){
@@ -32,15 +32,17 @@ export class ToDoService{
     }
 
     createrUser(user:User){
-        return this.http.post("https://localhost:7218/api/create-user", user);
+        return this.http.post("https://localhost:7218/api/create-user", user,{
+            params: new HttpParams()
+        });
     }
 
     changeDoList(item:ToDoItem){
-        return this.http.put("https://localhost:7218/api/change", item);
+        return this.http.put("https://localhost:7218/api/item", item);
     }
 
     deleteDoListItem(id:number){
-        return this.http.delete("https://localhost:7218/api/delete", {
+        return this.http.delete("https://localhost:7218/api/item", {
             params: new HttpParams().set(`id`,id)
         });
     }

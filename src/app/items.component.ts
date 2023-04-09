@@ -30,6 +30,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     }
 
     tempUserId: string;
+    jwt:string;
     tempUserLogin: string;
     tempUserPassword: string;
     doListItems: ToDoItem[];
@@ -101,7 +102,8 @@ export class ItemsComponent implements OnInit, OnDestroy {
     getUserId(userLogin: string, userPassword: string) {
         this.todoService.getUserId(userLogin, userPassword).subscribe({
             next: (data: any) => {
-                this.tempUserId = data.value;
+                this.jwt = data.acces_token;
+                this.tempUserId = data.Id;
                 this.cookie.set("UserId", data.value)
             },
             error: error => console.log(error)
