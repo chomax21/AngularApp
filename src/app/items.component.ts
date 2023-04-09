@@ -36,6 +36,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     userCreate: User = new User("", "", 0, "", "", "", "");
     haveValues: boolean = true;
     haveName: boolean = false;
+    changeToggle: boolean = false;
     item: ToDoItem = new ToDoItem(0, 0, " ", " "," ");
 
 
@@ -61,6 +62,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
             //this.haveValues = !this.haveValues;
             //this.haveName = !this.haveName;
         }
+        this.doListItems.sort((t1,t2) => {
+            if(t1.Priority > t2.Priority) return 1;
+            if(t1.Priority < t2.Priority) return -1;
+            return 0;
+        });
     }
 
     setPriority(items:ToDoItem[]):ToDoItem[]{

@@ -39,4 +39,10 @@ export class ToDoService{
         return this.http.put("https://localhost:7218/api/change", item);
     }
 
+    deleteDoListItem(id:number){
+        return this.http.delete("https://localhost:7218/api/delete", {
+            params: new HttpParams().set(`id`,id)
+        });
+    }
+
 }

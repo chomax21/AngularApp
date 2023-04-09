@@ -12,24 +12,8 @@
     </div>
     </div>
     <div *ngIf="haveName">
-        <div class="myblock">
-            <button class="mybutton" (click)="logout()">Logout</button>
-            <button class="mybutton" (click)="getItems()">Кнопка дай нам список дел</button>
-        </div>
-        <div class="myblock">
-            <dl *ngFor="let item of doListItems">
-                <dt>Нужно сделать:</dt>
-                <dd>{{item.Case}}</dd>
-                <dd [ngClass]="{
-                    red: item.Priority == 0,
-                    yellow: item.Priority == 1,
-                    green: item.Priority == 2
-                }">Приоритет: {{item.Priority | priority}}</dd>
-                <button (click)="changeToDo(item)" class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
-            </dl>
-        </div>
         <div>
-            <div class="myblock">
+            <div name="#todopage" class="myblock">
                 <div>
                     <label class="mylabel" for="Case">Что нужно делать</label>
                 </div>
@@ -47,14 +31,25 @@
                     </select>
                 </div>
             </div>
+                    <button class="mybutton" (click)="saveToDo(item)">Сохранить</button>
+                    <button class="mybutton" (click)="logToDo()">Log</button>
         </div>
         <div class="myblock">
-            <div>
-                <button class="mybutton" (click)="saveToDo(item)">Сохранить</button>
-            </div>
-            <div>
-                <button class="mybutton" (click)="logToDo()">Log</button>
-            </div>
+            <button class="mybutton" (click)="getItems()">Кнопка дай нам список дел</button>
+            <button class="mybutton" (click)="logout()">Выйти</button>            
         </div>
+        <div class="myblock">
+            <dl *ngFor="let item of doListItems">
+                <dt>Нужно сделать:</dt>
+                <dd>{{item.Case}}</dd>
+                <dd [ngClass]="{
+                    red: item.Priority == 0,
+                    yellow: item.Priority == 1,
+                    green: item.Priority == 2
+                }">Приоритет: {{item.Priority | priority}}</dd>
+                <button (click)="changeToDo(item)" class="mybutton">Изменить</button><button class="mybutton">Сделано!</button>
+            </dl>
+        </div>        
+
     </div>
 </div>
