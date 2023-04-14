@@ -4,6 +4,7 @@ import { ToDoItem } from './ToDoItem';
 import { User } from './User';
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
+import { Token } from './tokenItem'
 
 
 @Injectable({providedIn: 'root'})
@@ -12,16 +13,24 @@ export class ToDoService{
 
     public UserId:string = "ID не пришел =(!";
 
-    createToDoItem(item:ToDoItem){
-        return this.http.post("https://localhost:7218/api/item", item);
+    createToDoItem(item:ToDoItem, apiHeaders:HttpHeaders){
+        return this.http.post("https://localhost:7218/api/item", item, { headers: apiHeaders});
     }
 
-    getUserId(login:string, password:string){
-        return this.http.get('https://localhost:7218/api/get-user-id?login=' + login + '&password=' + password);
+    getUserId(login:string, password:string)/* : Observable<Token[]> */{
+        return this.http.get('https://localhost:7218/api/user-id?login=' + login + '&password=' + password)
+        /* .pipe(map((responce:any) => {
+            let token = responce["value"];
+            if(token){
+                return token.map(function(item:any): Token{
+                    return new Token(item.acces_token, item.id);
+                })}
+                return null
+        })) */;
     }
 
-    getDoLists(Id:string): Observable<ToDoItem[]>{
-        return this.http.get('https://localhost:7218/api/get-ready?UserId=' + Id).pipe(map((responce:any) => {
+    getDoLists(Id:string, apiHeaders:HttpHeaders): Observable<ToDoItem[]>{
+        return this.http.get('https://localhost:7218/api/get-ready?UserId=' + Id, { headers: apiHeaders}).pipe(map((responce:any) => {
             let itemList = responce["value"];
             if(itemList){
                 return itemList.map(function(item:any): ToDoItem{
@@ -32,18 +41,21 @@ export class ToDoService{
     }
 
     createrUser(user:User){
-        return this.http.post("https://localhost:7218/api/create-user", user,{
+        return this.http.post("https://localhost:7218/api/user", user,{
             params: new HttpParams()
         });
     }
 
-    changeDoList(item:ToDoItem){
-        return this.http.put("https://localhost:7218/api/item", item);
+    changeDoList(item:ToDoItem, apiHeaders:HttpHeaders){
+        return this.http.put("https://localhost:7218/api/item", item, {
+            headers: apiHeaders
+        });
     }
 
-    deleteDoListItem(id:number){
+    deleteDoListItem(id:number, apiHeaders:HttpHeaders){
         return this.http.delete("https://localhost:7218/api/item", {
-            params: new HttpParams().set(`id`,id)
+            params: new HttpParams().set(`id`,id),
+            headers: apiHeaders            
         });
     }
 

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
 import { DataService } from "./data.service";
@@ -15,12 +15,12 @@ export class ChildComponent{
 
     item: ToDoItem = new ToDoItem(0,0,"Пока тут пусто =(","nothing","");
     buttonReady: boolean = true;
-    
+    header: HttpHeaders;
 
     saveToDo(item: ToDoItem) {
         this.dataService.UserId$.subscribe((id) => this.item.userId = id); 
         console.log(item.userId);       
-        this.todoService.createToDoItem(item).subscribe({
+        this.todoService.createToDoItem(item, this.header).subscribe({
             next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
         });

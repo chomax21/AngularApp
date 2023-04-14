@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
 import { User } from './User';
 import { DataService } from "./data.service";
 import { CookieService } from "ngx-cookie-service";
+import { Type, plainToClass } from 'class-transformer';
+import { JsonPipe } from '@angular/common';
+import { Token } from './tokenItem';
 
 
 @Component({
@@ -39,17 +42,27 @@ export class ItemsComponent implements OnInit, OnDestroy {
     haveName: boolean = false;
     changeToggle: boolean = false;
     item: ToDoItem = new ToDoItem(0, 0, " ", " "," ");
+    token:Token;
 
 
     setUserId() {
         this.dataService.UserIdFromService(this.tempUserId);
     }
 
+    setHeaders():HttpHeaders{
+        if(this.jwt){
+            let header = new HttpHeaders();
+            header.set("acces_token", this.jwt);
+        }
+        else
+            return null;
+    }
+
 
     getItems() {
         this.tempUserId = this.cookie.get("UserId");
         if (this.tempUserId) {
-            this.todoService.getDoLists(this.tempUserId).subscribe({
+            this.todoService.getDoLists(this.tempUserId, this.setHeaders()).subscribe({
                 next: (data: ToDoItem[]) => {
                     this.doListItems = data;
                     this.doListItems = this.setPriority(this.doListItems);                                    
@@ -99,12 +112,16 @@ export class ItemsComponent implements OnInit, OnDestroy {
         this.todoService.createrUser(user).subscribe();
     }
 
+
+
     getUserId(userLogin: string, userPassword: string) {
         this.todoService.getUserId(userLogin, userPassword).subscribe({
             next: (data: any) => {
-                this.jwt = data.acces_token;
-                this.tempUserId = data.Id;
-                this.cookie.set("UserId", data.value)
+                   this.token = data["value"];
+                   this.jwt = this.token.token;
+                   this.tempUserId = this.token.id;
+                   console.log(this.token);    
+/*                 this.cookie.set("UserId", data.Id) */
             },
             error: error => console.log(error)
         });
@@ -124,7 +141,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     saveToDo(item: ToDoItem) {
         item.userId = this.tempUserId;
         console.log(item.userId);
-        this.todoService.createToDoItem(item).subscribe({
+        this.todoService.createToDoItem(item, this.setHeaders()).subscribe({
             next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
         });
@@ -136,7 +153,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         doItem.Case = this.item.Case;
         doItem.Priority = this.item.Priority;
         doItem.userId = this.tempUserId;
-        this.todoService.changeDoList(doItem).subscribe({
+        this.todoService.changeDoList(doItem, this.setHeaders()).subscribe({
             error: error => console.log(error)            
         });
 
