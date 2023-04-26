@@ -3,16 +3,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { AppComponent}   from './app.component';
 import { ChildComponent } from './child.component'
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ItemsComponent } from './items.component';
 import { DataService } from './data.service';
 import { CookieService } from 'ngx-cookie-service';
-import { PriorityPipe } from './priority.pipe'
+import { PriorityPipe } from './priority.pipe';
+
+import { InterseptorService } from './interceptor.Service';
 
 @NgModule({
     imports:      [ BrowserModule, FormsModule, HttpClientModule],
     declarations: [ AppComponent, ChildComponent, ItemsComponent, PriorityPipe ],
-    providers:    [DataService, CookieService],
+    providers:    [DataService, CookieService, {
+        provide: HTTP_INTERCEPTORS,
+        useClass: InterseptorService,
+        multi: true,
+      },],
     bootstrap:    [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+    
+ }

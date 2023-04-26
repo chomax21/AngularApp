@@ -51,18 +51,19 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
     setHeaders():HttpHeaders{
         if(this.jwt){
-            let header = new HttpHeaders();
-            header.set("acces_token", this.jwt);
+            let header = new HttpHeaders().set("Authorization", "Bearer " + this.jwt);
+            console.log(header);
+            return header;
         }
-        else
+        else{
             return null;
+        }
     }
 
 
     getItems() {
-        this.tempUserId = this.cookie.get("UserId");
         if (this.tempUserId) {
-            this.todoService.getDoLists(this.tempUserId, this.setHeaders()).subscribe({
+            this.todoService.getDoLists(this.tempUserId).subscribe({
                 next: (data: ToDoItem[]) => {
                     this.doListItems = data;
                     this.doListItems = this.setPriority(this.doListItems);                                    
@@ -76,11 +77,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
             //this.haveValues = !this.haveValues;
             //this.haveName = !this.haveName;
         }
-        this.doListItems.sort((t1,t2) => {
+        /* this.doListItems.sort((t1,t2) => {
             if(t1.Priority > t2.Priority) return 1;
             if(t1.Priority < t2.Priority) return -1;
             return 0;
-        });
+        }) */;
     }
 
     setPriority(items:ToDoItem[]):ToDoItem[]{
@@ -119,6 +120,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
             next: (data: any) => {
                    this.token = data["value"];
                    this.jwt = this.token.token;
+                   localStorage.setItem("jtw", this.jwt);
                    this.tempUserId = this.token.id;
                    console.log(this.token);    
 /*                 this.cookie.set("UserId", data.Id) */
@@ -141,7 +143,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     saveToDo(item: ToDoItem) {
         item.userId = this.tempUserId;
         console.log(item.userId);
-        this.todoService.createToDoItem(item, this.setHeaders()).subscribe({
+        this.todoService.createToDoItem(item).subscribe({
             next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
         });

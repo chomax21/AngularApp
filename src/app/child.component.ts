@@ -20,7 +20,7 @@ export class ChildComponent{
     saveToDo(item: ToDoItem) {
         this.dataService.UserId$.subscribe((id) => this.item.userId = id); 
         console.log(item.userId);       
-        this.todoService.createToDoItem(item, this.header).subscribe({
+        this.todoService.createToDoItem(item).subscribe({
             next: (data: any) => { console.log(this.item.Case + " sending") },
             error: error => console.log(error)
         });

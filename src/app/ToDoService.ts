@@ -13,8 +13,8 @@ export class ToDoService{
 
     public UserId:string = "ID не пришел =(!";
 
-    createToDoItem(item:ToDoItem, apiHeaders:HttpHeaders){
-        return this.http.post("https://localhost:7218/api/item", item, { headers: apiHeaders});
+    createToDoItem(item:ToDoItem){
+        return this.http.post("https://localhost:7218/api/item", item);
     }
 
     getUserId(login:string, password:string)/* : Observable<Token[]> */{
@@ -29,8 +29,8 @@ export class ToDoService{
         })) */;
     }
 
-    getDoLists(Id:string, apiHeaders:HttpHeaders): Observable<ToDoItem[]>{
-        return this.http.get('https://localhost:7218/api/get-ready?UserId=' + Id, { headers: apiHeaders}).pipe(map((responce:any) => {
+    getDoLists(Id:string): Observable<ToDoItem[]>{
+        return this.http.get('https://localhost:7218/api/ready-item?UserId=' + Id).pipe(map((responce:any) => {
             let itemList = responce["value"];
             if(itemList){
                 return itemList.map(function(item:any): ToDoItem{
