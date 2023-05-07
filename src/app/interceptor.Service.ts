@@ -1,22 +1,52 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
+import { Injectable, Pipe } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ToDoService } from './ToDoService';
+import { Token } from './tokenItem';
 
 @Injectable({providedIn: 'root'})
 export class InterseptorService implements HttpInterceptor {
-    constructor(){}
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(req);
+    constructor(private toDoService:ToDoService){
     }
 
-    addAuthToken(request: HttpRequest<any>){
-        const token = localStorage.getItem("jwt");
-        if(token){
-            return request.clone({
-                setHeaders: {
-                    Authorization: 'Bearer ' + token
-                }
-            })
+    
+
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+     
+        let jwt:string;
+        let jwtMethod:string;
+        let jwtStorage:string;
+
+        this.toDoService.token$.subscribe((token) => {
+            jwt = token;
+        })
+
+        jwtMethod = this.toDoService.getToken();
+        jwtStorage = localStorage.getItem("jwt");
+
+        if(jwt)
+            console.log(jwt + "INTERSEPTOR")
+        else if(jwtStorage){
+          console.log(jwtStorage + "STORAGE")
         }
+        else
+        console.log("LOST SOMEWHERE");
+
+        const authRequest = req.clone({headers: req.headers.set("Authorization","Bearer " + jwtStorage)})
+        return next.handle(authRequest)/* .pipe(
+            tap(
+              (event) => {
+                if (event instanceof HttpResponse)
+                  console.log('Server response')
+              },
+              (err) => {
+                if (err instanceof HttpErrorResponse) {
+                  if (err.status == 401)
+                    console.log('Unauthorized')
+                }
+              }
+            )); */
     }
 }
+
+

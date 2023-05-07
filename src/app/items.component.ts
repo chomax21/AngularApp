@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, Output, OnDestroy, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
@@ -21,16 +21,12 @@ export class ItemsComponent implements OnInit, OnDestroy {
     constructor(private todoService: ToDoService, private dataService: DataService, private cookie: CookieService) { }
 
     ngOnDestroy(): void {
-        this.cookie.delete("userId");
+
     }
     ngOnInit(): void {
-        let cook: string = this.cookie.get("userId");
-        if (cook) {
-            this.haveValues = !this.haveValues;
-            this.haveName = !this.haveName;
-        }
-        console.log(cook);
+
     }
+    
 
     tempUserId: string;
     jwt:string;
@@ -42,7 +38,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     haveName: boolean = false;
     changeToggle: boolean = false;
     item: ToDoItem = new ToDoItem(0, 0, " ", " "," ");
-    token:Token;
+    token = new Token("","");
 
 
     setUserId() {
@@ -60,8 +56,23 @@ export class ItemsComponent implements OnInit, OnDestroy {
         }
     }
 
+    checkHaveToken(): boolean{
+        this.todoService.id$.subscribe((id) => {
+            this.tempUserId = id;        
+        })
 
-    getItems() {
+        if(this.tempUserId){           
+            console.log(this.tempUserId + "ПРИШЕЛ В КОМПОНЕНТ");
+            return true;
+        }        
+        else{
+          console.log("ERROR IN CHECKMETHOD");  
+          return false;  
+        } 
+    }
+
+
+    getItems(){
         if (this.tempUserId) {
             this.todoService.getDoLists(this.tempUserId).subscribe({
                 next: (data: ToDoItem[]) => {
@@ -116,26 +127,37 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
 
     getUserId(userLogin: string, userPassword: string) {
-        this.todoService.getUserId(userLogin, userPassword).subscribe({
-            next: (data: any) => {
-                   this.token = data["value"];
-                   this.jwt = this.token.token;
-                   localStorage.setItem("jtw", this.jwt);
-                   this.tempUserId = this.token.id;
-                   console.log(this.token);    
-/*                 this.cookie.set("UserId", data.Id) */
-            },
-            error: error => console.log(error)
-        });
-        if (this.tempUserId) {
+        this.todoService.getUserId(userLogin, userPassword);
+
+        let result = this.checkHaveToken();
+
+        if (result) {
             this.haveValues = !this.haveValues;
             this.haveName = !this.haveName;
         }
+
+        /* .subscribe({
+            next: (data: any) => {
+                   this.token = data["value"];
+                   this.jwt = this.token["acces_token"];
+                   //console.log(this.jwt + 'token.token токен!');
+                   this.todoService.token = this.jwt;
+                   console.log(this.jwt + '   <--->   this.JWT токен!');
+                   localStorage.setItem("jtw", this.jwt);
+                   this.tempUserId = this.token.id;
+                   console.log(localStorage.getItem("jwt") + 'токен тут!');
+                   if (this.tempUserId) {
+                    this.haveValues = !this.haveValues;
+                    this.haveName = !this.haveName;
+                }    
+            },
+            error: error => console.log(error)
+        });     */
     }
 
     setName() {
         this.userCreate.firstName = "Max";
-        this.userCreate.login = "max"
+        this.userCreate.login = "max";
         this.haveName = true;
         console.log(this.haveName);
     }
@@ -155,7 +177,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         doItem.Case = this.item.Case;
         doItem.Priority = this.item.Priority;
         doItem.userId = this.tempUserId;
-        this.todoService.changeDoList(doItem, this.setHeaders()).subscribe({
+        this.todoService.changeDoList(doItem).subscribe({
             error: error => console.log(error)            
         });
 
@@ -163,5 +185,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
     logToDo() {
         console.log(this.item.Id + "_" + this.item.Case);
+        this.haveValues = !this.haveValues;
+        this.haveName = !this.haveName;
     }
 }

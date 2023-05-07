@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { ToDoItem } from './ToDoItem';
 import { User } from './User';
-import { Observable } from "rxjs";
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Token } from './tokenItem'
 
@@ -13,20 +13,40 @@ export class ToDoService{
 
     public UserId:string = "ID не пришел =(!";
 
+    public JwtToken:string = "";
+
+    public token$ = new Subject<string>();
+    public id$ = new Subject<string>();
+
+    public getToken():string{
+        if(this.JwtToken){
+            console.log("------> JWT ЕСТЬ!")
+            return this.JwtToken;
+        }
+        else{
+            console.log("------> JWT NOT FOUND!!!")
+        }
+    }
+
     createToDoItem(item:ToDoItem){
         return this.http.post("https://localhost:7218/api/item", item);
     }
 
-    getUserId(login:string, password:string)/* : Observable<Token[]> */{
-        return this.http.get('https://localhost:7218/api/user-id?login=' + login + '&password=' + password)
-        /* .pipe(map((responce:any) => {
-            let token = responce["value"];
-            if(token){
-                return token.map(function(item:any): Token{
-                    return new Token(item.acces_token, item.id);
-                })}
-                return null
-        })) */;
+    getUserId(login:string, password:string){
+        return this.http.get('https://localhost:7218/api/user-id?login=' + login + '&password=' + password).subscribe({
+            next: (data: any) => {
+                   let value = data["value"];
+                   let token = value["acces_token"];
+                   let id = value["id"];
+                   this.JwtToken = token;
+                   localStorage.setItem("jwt", token);
+                   this.token$.next(token);
+                   this.id$.next(id);
+                   console.log(token + '<---TOKEN тут!');  
+                   console.log(id + '<---ID тут!');  
+            },
+            error: error => console.log(error)
+        });
     }
 
     getDoLists(Id:string): Observable<ToDoItem[]>{
@@ -46,16 +66,13 @@ export class ToDoService{
         });
     }
 
-    changeDoList(item:ToDoItem, apiHeaders:HttpHeaders){
-        return this.http.put("https://localhost:7218/api/item", item, {
-            headers: apiHeaders
-        });
+    changeDoList(item:ToDoItem){
+        return this.http.put("https://localhost:7218/api/item", item);
     }
 
-    deleteDoListItem(id:number, apiHeaders:HttpHeaders){
+    deleteDoListItem(id:number){
         return this.http.delete("https://localhost:7218/api/item", {
-            params: new HttpParams().set(`id`,id),
-            headers: apiHeaders            
+            params: new HttpParams().set(`id`,id),           
         });
     }
 
