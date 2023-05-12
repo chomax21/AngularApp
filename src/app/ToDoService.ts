@@ -15,7 +15,6 @@ export class ToDoService{
 
     public JwtToken:string = "";
 
-    public token$ = new Subject<string>();
     public id$ = new Subject<string>();
 
     public getToken():string{
@@ -40,7 +39,6 @@ export class ToDoService{
                    let id = value["id"];
                    this.JwtToken = token;
                    localStorage.setItem("jwt", token);
-                   this.token$.next(token);
                    this.id$.next(id);
                    console.log(token + '<---TOKEN тут!');  
                    console.log(id + '<---ID тут!');  

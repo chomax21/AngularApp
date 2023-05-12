@@ -1,13 +1,13 @@
 import { Component, Input, Output, OnDestroy, OnInit, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ToDoService } from './ToDoService'
 import { ToDoItem } from './ToDoItem';
 import { User } from './User';
 import { DataService } from "./data.service";
 import { CookieService } from "ngx-cookie-service";
-import { Type, plainToClass } from 'class-transformer';
-import { JsonPipe } from '@angular/common';
 import { Token } from './tokenItem';
+import { Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -18,7 +18,16 @@ import { Token } from './tokenItem';
 
 })
 export class ItemsComponent implements OnInit, OnDestroy {
-    constructor(private todoService: ToDoService, private dataService: DataService, private cookie: CookieService) { }
+
+    constructor(private todoService: ToDoService, private dataService: DataService, private cookie: CookieService, private router:Router, private route: ActivatedRoute) {
+        this.querySubscripton = route.queryParams.subscribe(
+            (queryParam: any) => {
+                this.tempUserLogin = queryParam['login'];
+                this.tempUserPassword = queryParam['password'];
+            }
+        )
+        this.getUserId(this.tempUserLogin,this.tempUserPassword);
+     }
 
     ngOnDestroy(): void {
 
@@ -27,7 +36,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
     }
     
-
+    private querySubscripton: Subscription;
     tempUserId: string;
     jwt:string;
     tempUserLogin: string;
@@ -45,16 +54,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         this.dataService.UserIdFromService(this.tempUserId);
     }
 
-    setHeaders():HttpHeaders{
-        if(this.jwt){
-            let header = new HttpHeaders().set("Authorization", "Bearer " + this.jwt);
-            console.log(header);
-            return header;
-        }
-        else{
-            return null;
-        }
-    }
 
     checkHaveToken(): boolean{
         this.todoService.id$.subscribe((id) => {
@@ -85,18 +84,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
         }
         else {
             console.log("Error, not found ID");
-            //this.haveValues = !this.haveValues;
-            //this.haveName = !this.haveName;
-        }
-        /* this.doListItems.sort((t1,t2) => {
-            if(t1.Priority > t2.Priority) return 1;
-            if(t1.Priority < t2.Priority) return -1;
-            return 0;
-        }) */;
+        };
     }
 
     setPriority(items:ToDoItem[]):ToDoItem[]{
-        this.doListItems.forEach(function (value) {
+        items.forEach(function (value) {
             switch (value.Priority) {
                 case 0:
                     value.stringPriority = "Высокий"
@@ -113,55 +105,25 @@ export class ItemsComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.cookie.delete("UserId");
-        this.haveValues = !this.haveValues;
-        this.haveName = !this.haveName;
+        localStorage.removeItem('jwt');
+        this.router.navigate(['/login']);
     }
 
+  /*   // Создаем пользователя.
     createUser(user: User) {
         this.userCreate.login = this.tempUserLogin;
         this.userCreate.password = this.tempUserPassword;
         this.todoService.createrUser(user).subscribe();
-    }
+    } */
 
 
-
+    // Получаем Id и JWToken пользователя. Вся логика описана в сервисе.
     getUserId(userLogin: string, userPassword: string) {
         this.todoService.getUserId(userLogin, userPassword);
-
         let result = this.checkHaveToken();
-
-        if (result) {
-            this.haveValues = !this.haveValues;
-            this.haveName = !this.haveName;
-        }
-
-        /* .subscribe({
-            next: (data: any) => {
-                   this.token = data["value"];
-                   this.jwt = this.token["acces_token"];
-                   //console.log(this.jwt + 'token.token токен!');
-                   this.todoService.token = this.jwt;
-                   console.log(this.jwt + '   <--->   this.JWT токен!');
-                   localStorage.setItem("jtw", this.jwt);
-                   this.tempUserId = this.token.id;
-                   console.log(localStorage.getItem("jwt") + 'токен тут!');
-                   if (this.tempUserId) {
-                    this.haveValues = !this.haveValues;
-                    this.haveName = !this.haveName;
-                }    
-            },
-            error: error => console.log(error)
-        });     */
     }
 
-    setName() {
-        this.userCreate.firstName = "Max";
-        this.userCreate.login = "max";
-        this.haveName = true;
-        console.log(this.haveName);
-    }
-
+    // Сохраняем изменения в элементе todo.
     saveToDo(item: ToDoItem) {
         item.userId = this.tempUserId;
         console.log(item.userId);
@@ -173,6 +135,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         item.Id = 0;
     }
 
+    // Изменяем изменения в элементе todo.
     changeToDo(doItem: ToDoItem){
         doItem.Case = this.item.Case;
         doItem.Priority = this.item.Priority;

@@ -1,0 +1,10 @@
+<div class="myblock">
+    <label>Login</label>
+    <input class="myinput" name="login" [(ngModel)]="tempUserLogin">
+    <label>Password</label>
+    <input class="myinput" name="password" [(ngModel)]="tempUserPassword">
+</div>
+<div class="myblock">
+    <button class="mybutton" (click)="getUserId(tempUserLogin, tempUserPassword)">Авторизация</button>
+    <button class="mybutton" (click)="createUser(userCreate)">Новый пользователь</button>
+</div>

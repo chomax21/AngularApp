@@ -6,15 +6,11 @@ import { ToDoItem } from './ToDoItem';
 @Component({
     selector: 'my-app',
     templateUrl: './app.component.html',
-    styleUrls: [`./app.component.css`],
+    styleUrls: [`./items.component.css`],
     providers: [HttpClient, ToDoService]
 })
 
 
 
 export class AppComponent {
-    working:boolean = true;
-    goWork(){
-        this.working = !this.working;
-    }
 }
